@@ -382,7 +382,7 @@ def fixed_weight_rebal_wgt(returns_data, start_date, end_date, fixed_weights, re
     - DataFrame with weights over time
     """
     # Ensure weights sum to 1
-    if sum(fixed_weights.values()) != 1:
+    if round(sum(fixed_weights.values()),6) != 1:
         raise ValueError("Fixed weights must sum to 1.")
     
     # Filter data for the specified date range
