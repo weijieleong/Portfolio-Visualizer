@@ -105,7 +105,7 @@ def covar_ewma(returns, alpha):
     out.columns = returns.columns.tolist()
     return out
 
-def exp_covar(returns, halflife, annualized=52):
+def exp_covar(returns, halflife, annualized=261):
     alpha = 1 - math.exp(math.log(0.5) / (halflife* annualized))
     span = (2 / alpha) - 1
     exp_cov_matrix = returns.ewm(span=span).cov(pairwise=True).iloc[-len(returns.columns):]
@@ -213,7 +213,7 @@ def get_maxSharpe_wgt(ret, covar, rf, constraints):
     return optimized_weights
 
 
-def max_sharpe_rebal_wgt(returns_data, start_date, end_date, constraints_dict, shrink_covar=True, rebal_months=[4,10], annualized=52, halflife=3.5):
+def max_sharpe_rebal_wgt(returns_data, start_date, end_date, constraints_dict, shrink_covar=True, rebal_months=[4,10], annualized=261, halflife=3.5):
     
     ret_data_all = returns_data.loc[:end_date]
     ret_data_filtered = returns_data.loc[start_date:end_date]
@@ -265,7 +265,7 @@ def max_sharpe_rebal_wgt(returns_data, start_date, end_date, constraints_dict, s
     weights = pd.concat([reb_flag, weights], axis=1)
     return weights
 
-def min_vol_rebal_wgt(returns_data, start_date, end_date, constraints_dict, shrink_covar=True, rebal_months=[4,10], annualized=52, halflife=3.5):
+def min_vol_rebal_wgt(returns_data, start_date, end_date, constraints_dict, shrink_covar=True, rebal_months=[4,10], annualized=261, halflife=3.5):
     
     ret_data_all = returns_data.loc[:end_date]
     ret_data_filtered = returns_data.loc[start_date:end_date]
@@ -342,6 +342,74 @@ def min_vol(returns, cov_matrix, constraints):
   
     return optimized.x
 
+def equal_weight_rebal_wgt(returns_data, start_date, end_date, rebal_months=[4, 10]):
+    ret_data_filtered = returns_data.loc[start_date:end_date]
+    weights = pd.DataFrame(0, index=ret_data_filtered.index, columns=ret_data_filtered.columns)
+    weights.index = pd.to_datetime(weights.index, format='%Y%m%d')
+    reb_flag = pd.DataFrame(0, index=weights.index, columns=['reb_flag'])
+    
+    num_assets = len(weights.columns)
+    equal_weight = 1.0 / num_assets  # Each asset receives an equal share
+
+    for i in range(0, len(ret_data_filtered)):
+        # Check if it's the first data point or a rebalance date
+        if (weights.index[i].month in rebal_months and weights.index[i-1].month != weights.index[i].month) or i == 0:
+            weights.iloc[i] = equal_weight  # Set equal weights
+            reb_flag.iloc[i] = True
+        else:
+            # Non-rebalance dates: weight drifts according to asset's daily returns
+            weights.iloc[i] = weights.iloc[i-1] * (1 + ret_data_filtered.iloc[i].fillna(0))
+            weights_sum = weights.iloc[i].sum()
+            weights.iloc[i] /= weights_sum  # Normalize to maintain a total weight of 1
+            reb_flag.iloc[i] = False
+
+    weights = weights.rename(columns={c: c + '_wgt' for c in weights.columns})
+    weights = pd.concat([reb_flag, weights], axis=1)
+    return weights
+
+def fixed_weight_rebal_wgt(returns_data, start_date, end_date, fixed_weights, rebal_months=[4, 10]):
+    """
+    Function to create a fixed-weight portfolio with rebalancing at specified months.
+    
+    Parameters:
+    - returns_data: DataFrame containing asset returns
+    - start_date: Start date for the backtest
+    - end_date: End date for the backtest
+    - fixed_weights: Dictionary of fixed weights, e.g., {'SPY': 0.2, 'EFA': 0.3, ...}
+    - rebal_months: List of months for rebalancing
+    
+    Returns:
+    - DataFrame with weights over time
+    """
+    # Ensure weights sum to 1
+    if sum(fixed_weights.values()) != 1:
+        raise ValueError("Fixed weights must sum to 1.")
+    
+    # Filter data for the specified date range
+    ret_data_filtered = returns_data.loc[start_date:end_date]
+    weights = pd.DataFrame(0, index=ret_data_filtered.index, columns=ret_data_filtered.columns)
+    weights.index = pd.to_datetime(weights.index, format='%Y%m%d')
+    reb_flag = pd.DataFrame(0, index=weights.index, columns=['reb_flag'])
+
+    # Loop through the data and assign fixed weights on rebalance dates
+    for i in range(0, len(ret_data_filtered)):
+        # Check if it's the first data point or a rebalance date
+        if (weights.index[i].month in rebal_months and weights.index[i-1].month != weights.index[i].month) or i == 0:
+            # Set fixed weights for each ticker
+            for ticker, wgt in fixed_weights.items():
+                weights.at[weights.index[i], ticker] = wgt
+            reb_flag.iloc[i] = True
+        else:
+            # Non-rebalance dates: weight drifts according to asset's daily returns
+            weights.iloc[i] = weights.iloc[i-1] * (1 + ret_data_filtered.iloc[i].fillna(0))
+            weights_sum = weights.iloc[i].sum()
+            weights.iloc[i] /= weights_sum  # Normalize to maintain a total weight of 1
+            reb_flag.iloc[i] = False
+
+    # Rename columns to include '_wgt' suffix for clarity
+    weights = weights.rename(columns={c: c + '_wgt' for c in weights.columns})
+    weights = pd.concat([reb_flag, weights], axis=1)
+    return weights
 
 def display_rebal_wgt(df_wgt):
     display(df_wgt[df_wgt['reb_flag']==True].pipe(apply_style_heatmap).pipe(apply_2dp_percentage))
@@ -1175,7 +1243,7 @@ def plot_returns_distribution_boxplot(*args, start_date=None, end_date=None, tit
     fig.update_layout(yaxis_tickformat=".2%")
     fig.show()
 
-def plot_rolling_volatility(*args, start_date=None, end_date=None, window=52, title='Rolling Volatility', width=1000, height=600):
+def plot_rolling_volatility(*args, start_date=None, end_date=None, window=261, title='Rolling Volatility', width=1000, height=600):
 
     # input: returns data. Plot rolling volatility
 
