@@ -1250,7 +1250,7 @@ def plot_rolling_volatility(*args, start_date=None, end_date=None, window=261, t
     df_combined = pd.concat(args, axis=1)
     df_combined = df_combined.loc[start_date:end_date]
     df_combined = df_combined.fillna(0)
-    rolling_volatility = df_combined.rolling(window=window).std()
+    rolling_volatility = df_combined.rolling(window=window).std() * np.sqrt(window)
     
     fig = px.line(rolling_volatility, x=rolling_volatility.index, y=rolling_volatility.columns,
                       title=title, width=width, height=height, labels={'variable': 'Asset'})
@@ -1478,7 +1478,72 @@ def plot_return_risk_scatter_year(returns_df, freq='daily', periods=[1, 5], show
             results_df = results_df.loc[['Annualized return', 'Annualized volatility', 'Sharpe ratio']]
             results_df.index = [f"{period}Y_{row}" for row in results_df.index]
             display(results_df.pipe(freeze))
-            
+
+def plot_return_risk_scatter_maxrange(returns_df, freq='daily', show_data=True, width=1500, height=800):
+    
+    if freq == 'daily':
+        annualized = 261
+    elif freq == 'weekly':
+        annualized = 52
+    elif freq == 'monthly': 
+        annualized = 12
+    else:
+        print('Enter a valid frequency: daily, weekly, monthly')
+        return
+    
+    # calculate annualized volatility and return
+    annualized_volatility = performance_annualized_vol(returns_df, freq=freq)
+    annualized_return = performance_annualized_ret_via_cum(returns_df, freq=freq)
+    
+    scatter_plot = go.Scatter(
+        x=annualized_volatility,
+        y=annualized_return,
+        mode='markers+text',
+        text=returns_df.columns, 
+        textposition='top center',
+        marker=dict(size=8, opacity=1),
+        textfont=dict(size=10), 
+    )
+
+    layout = go.Layout(
+    title='Return v Risk',
+    xaxis=dict(title='Annualized Volatility', range=[-1.4 * abs(min(annualized_return)), max(max(annualized_volatility), max(annualized_return)) * 1.2]), 
+    yaxis=dict(title='Annualized Return', range=[-1.4 * abs(min(annualized_return)), max(max(annualized_volatility), max(annualized_return)) * 1.2]), 
+    xaxis_tickformat='.2%', 
+    yaxis_tickformat='.2%', 
+    width=width, 
+    height=height,
+    shapes=[
+        dict(
+            type='line',
+            x0=-2 * abs(min(annualized_return)),
+            y0=-2 * abs(min(annualized_return)),
+            x1=max(max(annualized_volatility), max(annualized_return)) * 2,
+            y1=max(max(annualized_volatility), max(annualized_return)) * 2,
+            line=dict(color='red', width=1),
+        )
+    ])
+
+    fig = go.Figure(data=scatter_plot, layout=layout)
+    fig.show()
+
+    if show_data == True:
+        results_df = performance_summary_constituents(returns_df, frequency=freq)
+        results_df = results_df.loc[['Annualized return', 'Annualized volatility', 'Sharpe ratio']]
+        display(results_df.pipe(freeze))
+
+
+def monthly_performance_table(portfolio_returns):
+       # Resample returns to monthly frequency and calculate returns
+       monthly_rets = portfolio_returns.resample('M').apply(lambda x: (x + 1).prod() - 1)
+       
+       # Pivot the table to have years as rows and months as columns
+       monthly_rets_table = monthly_rets.pivot_table(index=monthly_rets.index.year, columns=monthly_rets.index.month, values=monthly_rets.columns[0]) 
+       
+       # Rename columns to represent months
+       monthly_rets_table.columns = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+       
+       return monthly_rets_table
         
 def plot_factor_exposure(df_factor_port_exp, df_factor_benchmark_exp, portfolio_name, benchmark_ticker='URTH', show_data=True, width=1000, height=600):
 
