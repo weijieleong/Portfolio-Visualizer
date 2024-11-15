@@ -1,0 +1,119 @@
+﻿Ticker,Name,Category
+SPY,SPDR S&P 500 ETF Trust,Equities
+IJH,iShares Core S&P Mid-Cap ETF,Equities
+IJR,iShares Core S&P Small-Cap ETF,Equities
+EFA,iShares MSCI EAFE ETF,Equities
+IEMG,iShares Core MSCI Emerging Markets ETF,Equities
+AGG,iShares Core U.S. Aggregate Bond ETF,Fixed income
+BNDX,Vanguard Total International Bond ETF,Fixed income
+IEF,iShares 7-10 Year Treasury Bond ETF,Fixed income
+TLT,iShares 20+ Year Treasury Bond ETF,Fixed income
+GLD,SPDR Gold Shares,Commodities
+RSP,Invesco S&P 500 Equal Weight ETF,Equities
+QQQ,Invesco QQQ Trust Series 1,Equities
+XLY,Consumer Discretionary Select Sector SPDR Fund,Equities
+XLP,Consumer Staples Select Sector SPDR Fund,Equities
+XLE,Energy Select Sector SPDR Fund,Equities
+XLF,Financial Select Sector SPDR Fund,Equities
+XLV,Health Care Select Sector SPDR Fund,Equities
+XLI,Industrial Select Sector SPDR Fund,Equities
+XLB,Materials Select Sector SPDR Fund,Equities
+XLK,Technology Select Sector SPDR Fund,Equities
+XLU,Utilities Select Sector SPDR Fund,Equities
+SHY,iShares 1-3 Year Treasury Bond ETF,Fixed income
+SHV,iShares Short Treasury Bond ETF,Fixed income
+KWEB,KraneShares CSI China Internet ETF,Equities
+EWT,iShares MSCI Taiwan ETF,Equities
+EWH,iShares MSCI Hong Kong ETF,Equities
+MCHI,iShares MSCI China ETF,Equities
+TIP,iShares TIPS Bond ETF,Fixed income
+MOAT,VanEck Morningstar Wide Moat ETF,Equities
+SLV,iShares Silver Trust,Commodities
+IEUR,iShares Core MSCI Europe ETF,Equities
+IWM,iShares Russell 2000 ETF,Equities
+DIA,SPDR Dow Jones Industrial Average ETF Trust,Equities
+EWJ,iShares MSCI Japan ETF,Equities
+INDA,iShares MSCI India ETF,Equities
+DXJ,WisdomTree Japan Hedged Equity Fund,Equities
+HYG,iShares iBoxx $ High Yield Corporate Bond ETF,Fixed income
+CEMB,iShares J.P. Morgan EM Corporate Bond ETF,Fixed income
+HYLD,iShares Global High Yield Corp Bond UCITS ETF,Fixed income
+LQD,iShares iBoxx $ Investment Grade Corporate Bond ETF,Fixed income
+MBB,iShares MBS ETF,Fixed income
+IQLT,iShares MSCI Intl Quality Factor ETF,Equities
+DIHP,Dimensional International High Profitability ETF,Equities
+SPHQ,Invesco Exchange-Traded Fund Trust - Invesco S&P 500 Quality Etf,Equities
+XMHQ,Invesco S&P MidCap Quality ETF,Equities
+JQUA,JPMorgan US Quality Factor ETF,Equities
+DUHP,Dimensional US High Profitability ETF,Equities
+IWD,iShares Russell 1000 Value ETF,Equities
+SPYV,SPDR Portfolio S&P 500 Value ETF,Equities
+COWZ,Pacer US Cash Cows 100 ETF,Equities
+DFAT,Dimensional US Targeted Value ETF,Equities
+DFUV,Dimensional US Marketwide Value ETF,Equities
+DFAC,Dimensional US Core Equity 2 ETF,Equities
+QUAL,iShares MSCI USA Quality Factor ETF,Equities
+MOTI,VanEck Morningstar International Moat ETF,Equities
+USMV,iShares MSCI USA Min Vol Factor ETF,Equities
+DFSV,DFA Dimensional US Small Cap Value ETF,Equities
+DFEV,DFA Dimensional Emerging Markets Value ETF,Equities
+DFIV,Dimensional International Value ETF,Equities
+SMMD,iShares Russell 2500 ETF,Equities
+DFAX,DFA Dimensional World ex US Core Equity 2 ETF,Equities
+URTH,iShares MSCI World ETF,Equities
+IUSB,iShares Core Total USD Bond Market ETF,Fixed income
+AOK,iShares Core Conservative Allocation ETF,Multi-asset
+AOM,iShares Core Moderate Allocation ETF,Multi-asset
+AOR,iShares Core Growth Allocation ETF,Multi-asset
+HYS,PIMCO 0-5 Year High Yield Corporate Bond Index ETF,Fixed income
+FALN,iShares Fallen Angels USD Bond ETF,Fixed income
+DFCF,DFA Core Fixed Income ETF,Fixed income
+CORP,PIMCO Investment Grade Corporate Bond Index ETF,Fixed income
+MINT,PIMCO Enhanced Short Maturity Active ETF,Fixed income
+BND,Vanguard Total Bond Market ETF,Fixed income
+IAGG,iShares Core International Aggregate Bond ETF,Fixed income
+BOND,PIMCO Active Bond Exchange-Traded Fund,Fixed income
+GOVT,iShares U.S. Treasury Bond ETF,Fixed income
+AGGU,iShares Core Global Aggregate Bond UCITS ETF USD-Hedged-Acc,Fixed income
+EMB,iShares J.P. Morgan USD Emerging Markets Bond ETF,Fixed income
+USHY,iShares Broad USD High Yield Corporate Bond ETF,Fixed income
+IUAA,iShares US Aggregate Bond UCITS ETF,Fixed income
+BBIN,JPMorgan BetaBuilders International Equity ETF,Equities
+JREG,JPMorgan Global Research Enhanced Index Equity (ESG) UCITS ETF,Equities
+ACWI,iShares MSCI ACWI ETF,Equities
+EIMI,iShares Core MSCI EM IMI UCITS ETF,Equities
+BOTZ,Global X Robotics & Artificial Intelligence ETF,Equities
+XAIX,Xtrackers Artificial Intelligence & Big Data UCITS ETF,Equities
+AIQ,Global X Artificial Intelligence & Technology ETF,Equities
+CHAT,Roundhill Generative AI & Technology ETF,Equities
+BLOK,Amplify Transformational Data Sharing ETF,Equities
+CLOU,Global X Cloud Computing ETF,Equities
+QTUM,Defiance Quantum ETF,Equities
+CIBR,First Trust NASDAQ Cybersecurity ETF,Equities
+ARKF,ARK Fintech Innovation ETF,Equities
+ARKW,ARK Next Generation Internet ETF,Equities
+ESPO,VanEck Video Gaming and eSports ETF,Equities
+SMH,VanEck Semiconductor ETF,Equities
+SNSR,Global X Internet of Things ETF,Equities
+ICLN,iShares Global Clean Energy ETF,Equities
+PHO,Invesco Water Resources ETF,Equities
+TAN,Invesco Solar ETF,Equities
+FAN,First Trust Global Wind Energy ETF,Equities
+DRIV,Global X Autonomous & Electric Vehicles ETF,Equities
+GRID,First Trust NASDAQ Clean Edge Smart Grid Infrastructure Index Fund,Equities
+LIT,Global X Lithium & Battery Tech ETF,Equities
+ESGU,iShares ESG Aware MSCI USA ETF,Equities
+ESGD,iShares ESG Aware MSCI EAFE ETF,Equities
+ESGE,iShares ESG Aware MSCI EM ETF,Equities
+IBB,iShares Biotechnology ETF,Equities
+ARKG,ARK Genomic Revolution ETF,Equities
+IDNA,iShares Genomics Immunology and Healthcare ETF,Equities
+XHE,SPDR S&P Health Care Equipment ETF,Equities
+IHF,iShares U.S. Healthcare Providers ETF,Equities
+IHI,iShares U.S. Medical Devices ETF,Equities
+SBIO,ALPS Medical Breakthroughs ETF,Equities
+HEAL,iShares Healthcare Innovation UCITS ETF,Equities
+HTEC,ROBO Global R Healthcare Technology and Innovation ETF,Equities
+IVV,iShares Core S&P 500 ETF,Equities
+IDEV,iShares Core MSCI International Developed Market ETF,Equities
+HYDB,iShares High Yield Systematic Bond ETF,Fixed income
