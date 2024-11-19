@@ -572,7 +572,9 @@ def performance_summary(portfolio_returns, portfolio_weights, benchmark_rel_perf
     
     portfolio_returns = portfolio_returns.loc[start_date:end_date]
     portfolio_weights = portfolio_weights.loc[start_date:end_date]
-    
+
+    total_period_years = (pd.to_datetime(end_date) - pd.to_datetime(start_date)).days
+
     portfolio_names = portfolio_returns.columns
     
     relative_perf_df = calculate_relative_per(portfolio_returns, benchmark_rel_perf)
@@ -590,13 +592,13 @@ def performance_summary(portfolio_returns, portfolio_weights, benchmark_rel_perf
         median_rel_perf = relative_perf_df.loc['Median'][portfolio]
         min_rel_perf = relative_perf_df.loc['Min'][portfolio]
         port_corr = portfolio_returns[portfolio].corr(benchmark_rel_perf)
-        cum_1y_port = ((1 + portfolio_returns.iloc[annualized * -1:][portfolio]).cumprod() - 1)[-1]
-        cum_3y_port = ((1 + portfolio_returns.iloc[annualized * -3:][portfolio]).cumprod() - 1)[-1]
-        ann_3y_port = ((1+cum_3y_port) ** (annualized/(annualized*3))) - 1
-        cum_5y_port = ((1 + portfolio_returns.iloc[annualized * -5:][portfolio]).cumprod() - 1)[-1]
-        ann_5y_port = ((1+cum_5y_port) ** (annualized/(annualized*5))) - 1
-        cum_8y_port = ((1 + portfolio_returns.iloc[annualized * -8:][portfolio]).cumprod() - 1)[-1]
-        ann_8y_port = ((1+cum_8y_port) ** (annualized/(annualized*8))) - 1
+        cum_1y_port = ((1 + portfolio_returns.iloc[annualized * -1:][portfolio]).cumprod() - 1)[-1] if total_period_years >= 1 else np.nan
+        cum_3y_port = ((1 + portfolio_returns.iloc[annualized * -3:][portfolio]).cumprod() - 1)[-1] if total_period_years >= 3 else np.nan
+        ann_3y_port = ((1+cum_3y_port) ** (annualized/(annualized*3))) - 1 if total_period_years >= 3 else np.nan
+        cum_5y_port = ((1 + portfolio_returns.iloc[annualized * -5:][portfolio]).cumprod() - 1)[-1] if total_period_years >= 5 else np.nan
+        ann_5y_port = ((1+cum_5y_port) ** (annualized/(annualized*5))) - 1 if total_period_years >= 5 else np.nan
+        cum_8y_port = ((1 + portfolio_returns.iloc[annualized * -8:][portfolio]).cumprod() - 1)[-1] if total_period_years >= 8 else np.nan
+        ann_8y_port = ((1+cum_8y_port) ** (annualized/(annualized*8))) - 1 if total_period_years >= 8 else np.nan
 
         ann_to = portfolio_turnover(portfolio_weights[portfolio], rebal_per_yr=rebal_per_year).loc['Ann_turnover'].values[0]
         
@@ -620,13 +622,13 @@ def performance_summary(portfolio_returns, portfolio_weights, benchmark_rel_perf
             bm_min_rel_perf = math.nan
             benchmark_corr = math.nan
             benchmark_ann_to = math.nan  
-            cum_1y_bm = ((1 + benchmark_returns.iloc[annualized * -1:][benchmark_col]).cumprod() - 1)[-1]
-            cum_3y_bm = ((1 + benchmark_returns.iloc[annualized * -3:][benchmark_col]).cumprod() - 1)[-1]
-            ann_3y_bm = ((1+cum_3y_bm) ** (annualized/(annualized*3))) - 1
-            cum_5y_bm = ((1 + benchmark_returns.iloc[annualized * -5:][benchmark_col]).cumprod() - 1)[-1]
-            ann_5y_bm = ((1+cum_5y_bm) ** (annualized/(annualized*5))) - 1
-            cum_8y_bm = ((1 + benchmark_returns.iloc[annualized * -8:][benchmark_col]).cumprod() - 1)[-1]
-            ann_8y_bm = ((1+cum_8y_bm) ** (annualized/(annualized*8))) - 1
+            cum_1y_bm = ((1 + benchmark_returns.iloc[annualized * -1:][benchmark_col]).cumprod() - 1)[-1] if total_period_years >= 1 else np.nan
+            cum_3y_bm = ((1 + benchmark_returns.iloc[annualized * -3:][benchmark_col]).cumprod() - 1)[-1] if total_period_years >= 3 else np.nan
+            ann_3y_bm = ((1+cum_3y_bm) ** (annualized/(annualized*3))) - 1 if total_period_years >= 3 else np.nan
+            cum_5y_bm = ((1 + benchmark_returns.iloc[annualized * -5:][benchmark_col]).cumprod() - 1)[-1] if total_period_years >= 5 else np.nan
+            ann_5y_bm = ((1+cum_5y_bm) ** (annualized/(annualized*5))) - 1 if total_period_years >= 5 else np.nan
+            cum_8y_bm = ((1 + benchmark_returns.iloc[annualized * -8:][benchmark_col]).cumprod() - 1)[-1] if total_period_years >= 8 else np.nan
+            ann_8y_bm = ((1+cum_8y_bm) ** (annualized/(annualized*8))) - 1 if total_period_years >= 8 else np.nan
 
             metrics_dict[benchmark_name] = [benchmark_cum_ret, benchmark_ann_ret, cum_1y_bm, cum_3y_bm, cum_5y_bm, cum_8y_bm, ann_3y_bm, ann_5y_bm, ann_8y_bm, benchmark_ann_vol, benchmark_sharpe, 
                                             benchmark_sortino, benchmark_mdd, bm_median_rel_perf, bm_min_rel_perf, benchmark_corr, benchmark_ann_to]
@@ -915,6 +917,8 @@ def performance_summary_constituents(returns, start_date=None, end_date=None, fr
     # Filter returns within the specified date range
     returns = returns.loc[start_date:end_date]
 
+    total_period_years = (end_date - start_date).days / 365
+
     metrics_dict = {}
     for name in returns.columns:
         cum_ret = ((1 + returns[name]).cumprod() - 1).iloc[-1]
@@ -923,13 +927,13 @@ def performance_summary_constituents(returns, start_date=None, end_date=None, fr
         sharpe_ratio = performance_sharpe(returns[name], freq=frequency)
         sortino_ratio = performance_sortino(returns[name], freq=frequency).values[0]
         mdd = performance_mdd(returns[name])
-        cum_1y = ((1 + returns.iloc[annualized * -1:][name]).cumprod() - 1).iloc[-1]
-        cum_3y = ((1 + returns.iloc[annualized * -3:][name]).cumprod() - 1).iloc[-1]
-        ann_3y = ((1+cum_3y) ** (annualized/(annualized*3))) - 1
-        cum_5y = ((1 + returns.iloc[annualized * -5:][name]).cumprod() - 1).iloc[-1]
-        ann_5y = ((1+cum_5y) ** (annualized/(annualized*5))) - 1
-        cum_8y = ((1 + returns.iloc[annualized * -8:][name]).cumprod() - 1).iloc[-1]
-        ann_8y = ((1+cum_8y) ** (annualized/(annualized*8))) - 1
+        cum_1y = ((1 + returns.iloc[-annualized:] [name]).cumprod() - 1).iloc[-1] if total_period_years >= 1 else np.nan
+        cum_3y = ((1 + returns.iloc[-annualized * 3:][name]).cumprod() - 1).iloc[-1] if total_period_years >= 3 else np.nan
+        ann_3y = ((1 + cum_3y) ** (annualized / (annualized * 3)) - 1) if total_period_years >= 3 else np.nan
+        cum_5y = ((1 + returns.iloc[-annualized * 5:][name]).cumprod() - 1).iloc[-1] if total_period_years >= 5 else np.nan
+        ann_5y = ((1 + cum_5y) ** (annualized / (annualized * 5)) - 1) if total_period_years >= 5 else np.nan
+        cum_8y = ((1 + returns.iloc[-annualized * 8:][name]).cumprod() - 1).iloc[-1] if total_period_years >= 8 else np.nan
+        ann_8y = ((1 + cum_8y) ** (annualized / (annualized * 8)) - 1) if total_period_years >= 8 else np.nan
 
         
         metrics_dict[name] = [cum_ret, ann_ret, cum_1y, cum_3y, cum_5y, cum_8y, ann_3y, ann_5y, ann_8y, ann_vol, sharpe_ratio, sortino_ratio, mdd]
