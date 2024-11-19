@@ -573,7 +573,7 @@ def performance_summary(portfolio_returns, portfolio_weights, benchmark_rel_perf
     portfolio_returns = portfolio_returns.loc[start_date:end_date]
     portfolio_weights = portfolio_weights.loc[start_date:end_date]
 
-    total_period_years = (pd.to_datetime(end_date) - pd.to_datetime(start_date)).days
+    total_period_years = (pd.to_datetime(end_date) - pd.to_datetime(start_date)).days / 365
 
     portfolio_names = portfolio_returns.columns
     
