@@ -1,4 +1,4 @@
-﻿Ticker,Name,Category,Exchange
+Ticker,Name,Category,Exchange
 SPY,SPDR S&P 500 ETF Trust,Equities,US
 IJH,iShares Core S&P Mid-Cap ETF,Equities,US
 IJR,iShares Core S&P Small-Cap ETF,Equities,US
@@ -119,3 +119,29 @@ IDEV,iShares Core MSCI International Developed Market ETF,Equities,US
 HYDB,iShares High Yield Systematic Bond ETF,Fixed income,US
 CSPX,iShares Core S&P 500 UCITS ETF,Equities,London
 XDEW,Xtrackers S&P 500 Equal Weight UCITS ETF,Equities,London
+M1WO Index,MSCI World Net Total Return USD Index,Index,Index
+M1WD Index,MSCI ACWI Net Total Return USD Index,Index,Index
+SPXT Index,S&P 500 Total Return Index,Index,Index
+SPTGCUT Index,S&P Target Risk Conservative Total Return Index,Index,Index
+SPTGMUT Index,S&P Target Risk Moderate Total Return Index,Index,Index
+SPTGGUT Index,S&P Target Risk Growth Total Return Index,Index,Index
+QWLD,SPDR MSCI World StrategicFactors ETF,Equities,US
+QUS,SPDR MSCI USA StrategicFactors ETF,Equities,US
+IDRV,iShares Self-Driving EV and Tech ETF,Equities,US
+IGPT,Invesco AI and Next Gen Software ETF,Equities,US
+SKYY,First Trust Cloud Computing ETF,Equities,US
+HACK,Amplify Cybersecurity ETF,Equities,US
+FINX,Global X FinTech ETF,Equities,US
+SOXX,iShares Semiconductor ETF,Equities,US
+KURE,KraneShares MSCI All China Health Care Index ETF,Equities,US
+CHIQ,Global X MSCI China Consumer Discretionary ETF,Equities,US
+KGRN,KraneShares MSCI China Clean Technology Index ETF,Equities,US
+CXSE,WisdomTree Trust WisdomTree China ex-State-Owned Enterprises Fund,Equities,US
+KBA,KraneShares Bosera MSCI China A 50 Connect Index ETF,Equities,US
+KSTR,KraneShares SSE STAR Market 50 Index ETF,Equities,US
+XBI,SPDR S&P Biotech ETF,Equities,US
+IXJ,iShares Global Healthcare ETF,Equities,US
+IHE,iShares US Pharmaceuticals ETF,Equities,US
+PPH,VanEck Pharmaceutical ETF,Equities,US
+LBUSTRUU Index,Bloomberg US Agg Total Return Index,Index,Index
+LEGATRUU Index,Bloomberg Global-Aggregate Total Return Index,Index,Index
