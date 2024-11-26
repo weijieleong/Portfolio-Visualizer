@@ -1053,7 +1053,49 @@ def exposure_dcm(df_all_port_weights, etf_dcm, etf_credit_quality, bonds_additio
     mat_dur_df_all.loc[['Duration', 'Maturity']] = mat_dur_df_all.loc[['Duration', 'Maturity']].map('{:.3}'.format)
     
     return mat_dur_df_all
+
+def forecast_portfolio(df_ret):
+    port_name = df_ret.columns
     
+    # Initialize NAV DataFrame
+    df_nav = pd.DataFrame(0, columns=df_ret.columns, index=df_ret.index)
+    df_nav.iloc[0] = 100
+
+    # Calculate NAV series
+    for i in range(1, len(df_ret)):
+        df_nav.iloc[i] = df_nav.iloc[i - 1] * (1 + df_ret.iloc[i])
+
+    geo_ret = np.log(df_nav / df_nav.shift(1))  # Calculate geometric returns
+
+    # Calculate average returns and standard deviations
+    avg_ret_list = geo_ret.mean() * 261  # Annualized mean return
+    stdev_list = geo_ret.std() * np.sqrt(261)  # Annualized standard deviation
+
+    conf_interval = [0.1, 0.25, 0.5, 0.75, 0.9]
+    all_simulations = pd.DataFrame()
+
+    for n, portfolio in enumerate(port_name):
+        simulations = pd.DataFrame()
+        simulations['Month'] = range(0, 360)
+        simulations['ExpRtn'] = avg_ret_list[portfolio]
+        simulations['Stdev'] = stdev_list[portfolio]
+
+        for percentile in conf_interval:
+            percentile_label = f"{int(percentile * 100)}th Percentile"
+            simulations[percentile_label] = 100
+            for i in range(1, len(simulations)):
+                simulations.loc[i, percentile_label] = math.exp(
+                    (simulations.loc[i, 'Month'] / 12 * simulations.loc[i, 'ExpRtn']) +
+                    (np.sqrt(simulations.loc[i, 'Month'] / 12) * simulations.loc[i, 'Stdev'] * norm.ppf(percentile))
+                ) * 100
+
+        simulations = simulations.drop(columns=['ExpRtn', 'Stdev'])
+        simulations.set_index('Month', inplace=True)
+        simulations.columns = [f"{portfolio}_{col}" for col in simulations.columns]
+
+        all_simulations = pd.concat([all_simulations, simulations], axis=1)
+
+    return all_simulations
 
 def plot_cumulative_returns(*args, start_date=None, end_date=None, title='Cumulative Return', 
                             x_axis_title='Date', y_axis_title='Cumulative Return %', width=1000, height=600, show_data=True):
