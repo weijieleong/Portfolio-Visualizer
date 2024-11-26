@@ -1738,3 +1738,23 @@ def plot_exposure_over_time(df_weight, df_exposure, start_date=None, end_date=No
     fig.update_layout(title='Exposure over time', xaxis_title='Date', yaxis=dict(title='Weights', tickformat='.2%'), legend=dict(x=1.1), height=height, width=width)
 
     fig.show()
+
+def plot_forecast_simulation(df, width=1000, height=600):
+    fig = go.Figure()
+    
+    for column in df.columns:
+        fig.add_trace(go.Scatter(
+            x=df.index, y=df[column],
+            mode='lines', name=column,
+            customdata=df.index, hoverinfo="text",
+            hovertext=[
+                f"Month: {index}<br>{column}: {value:,.2f}"
+                for index, value in zip(df.index, df[column])
+            ]
+        ))
+
+    fig.update_layout(
+        xaxis_title='Month', yaxis_title='Portfolio Value', title='Simulated Portfolio Forecast', width=width,
+        height=height, legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5))
+
+    fig.show()
