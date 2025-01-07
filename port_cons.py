@@ -1363,16 +1363,65 @@ def plot_pie_chart(series, title=None, width=1000, height=600):
     fig.update_layout(title=title, width=width, height=height, showlegend=True)
     fig.show()
     
-def plot_pie_chart_topX(series, title, topX=7, width=1000, height=600):
-    top_x = series.sort_values(ascending=False).head(topX)
-    other_sum = series.sum() - top_x.sum()
-    
-    labels = list(top_x.index) + ['Others']
-    values = list(top_x) + [other_sum]
-    
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent', hole=0.3)])
-    fig.update_layout(title=title, width=width, height=height, showlegend=True)
-    fig.show()
+def plot_pie_chart_topX(series, title, topX=10, width=1000, height=600):
+    # Filter for values greater than 0
+    series = series[series > 0]
+
+    # Proceed only if there are values to plot
+    if not series.empty:
+        top_x = series.sort_values(ascending=False).head(topX)
+        other_sum = series.sum() - top_x.sum()
+
+        # Filter labels and values based on positive values
+        labels = list(top_x.index) 
+        values = list(top_x)
+        
+        # Add 'Others' only if other_sum is greater than 0
+        if other_sum > 0:
+            labels.append('Others')
+            values.append(other_sum)
+
+        fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent', hole=0.3)])
+        fig.update_layout(title=title, width=width, height=height, showlegend=True)
+        return fig
+    else:
+        print("No values greater than 0 to plot.")  
+        return None
+
+def plot_bar_chart_topX(series, title, topX=10, width=1000, height=600):
+    # Filter for values greater than 0
+    series = series[series > 0]
+
+    # Proceed only if there are values to plot
+    if not series.empty:
+        top_x = series.sort_values(ascending=False).head(topX)
+        other_sum = series.sum() - top_x.sum()
+
+        # Filter labels and values based on positive values
+        labels = list(top_x.index)
+        values = list(top_x)
+
+        # Add 'Others' only if other_sum is greater than 0
+        if other_sum > 0:
+            labels.append('Others')
+            values.append(other_sum)
+
+        # Calculate percentages and format labels
+        total_sum = sum(values)
+        text_labels = [f'{round(value / total_sum * 100, 2)}%' for value in values]  # Only percentage
+
+        fig = go.Figure(data=[go.Bar(
+            x=labels,
+            y=values,
+            text=text_labels,  # Display only percentage
+            textposition='auto',  # Position labels automatically (typically above bars)
+            textangle=0  # No rotation
+        )])
+        fig.update_layout(title=title, width=width, height=height, showlegend=False, yaxis_tickformat=".0%")
+        return fig
+    else:
+        print("No values greater than 0 to plot.")
+        return None
     
     
 def plot_exposure_diff(portfolio_exposure, benchmark_exposure, portfolio_names, start_date=None, end_date=None, width=1500, height=800):
