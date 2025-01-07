@@ -161,7 +161,7 @@ SRS Income Preserve,SRS Income Preserve,Syfe portfolio,Syfe portfolio,SGD,Live d
 SRS Income Enhance,SRS Income Enhance,Syfe portfolio,Syfe portfolio,SGD,Live data
 SRS Cash SGD flexi,SRS Cash SGD flexi,Syfe portfolio,Syfe portfolio,SGD,Backtest + live data
 SRS E100,SRS E100,Syfe portfolio,Syfe portfolio,SGD,Backtest + live data
-Downside protected,Downside protected,Syfe portfolio,Syfe portfolio,USD,Live data
+Downside protected,Downside protected,Syfe portfolio,Syfe portfolio,USD,Backtest + live data
 AAXJ,iShares MSCI All Country Asia ex Japan ETF,Equities,US,USD,
 ARKK,ARK Innovation ETF,Equities,US,USD,
 ARKQ,ARK Autonomous Technology & Robotics ETF,Equities,US,USD,
