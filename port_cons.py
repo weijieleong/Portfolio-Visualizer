@@ -1027,6 +1027,17 @@ def summary_vol_constituents(returns_df, frequency='daily', rf=0):
 
     return results_df
 
+def exposure_analysis_mixed(df_wgt, df_exposure, fi_list , latest_data=True, start_date=None, end_date=None):
+    
+    fi_list_suffix = [element + '_wgt' for element in fi_list]
+    reb_flag = df_wgt['reb_flag']
+    
+    df_wgt_fi = df_wgt.loc[:, [col for col in df_wgt.columns if col in fi_list_suffix]]
+    df_wgt_fi = df_wgt_fi.div(df_wgt_fi.sum(axis=1), axis=0)
+    df_wgt_fi = pd.concat([reb_flag, df_wgt_fi],axis=1)
+    
+    df_exposure = exposure_analysis(df_wgt_fi, df_exposure, latest_data=latest_data, start_date=start_date, end_date=end_date)
+    return df_exposure
 
 def median_credit_quality(df_wgt, credit_qual_breakdown, bonds_list):
     credit_qual_df = exposure_analysis_mixed(df_wgt,credit_qual_breakdown, bonds_list, latest_data=True)
