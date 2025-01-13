@@ -1070,7 +1070,7 @@ def calc_avg_credit_rating(portfolio_weights, bond_ratings, latest_data=True, st
     portfolio_weights.columns = [col.replace('_wgt', '') for col in portfolio_weights.columns]
 
     tickers = portfolio_weights.columns
-    tickers_fi = [ticker for ticker in tickers if credit_qual_breakdown.loc['Credit rating', ticker] != 0]
+    tickers_fi = [ticker for ticker in tickers if bond_ratings.loc['Credit rating', ticker] != 0]
 
     bond_ratings = bond_ratings.reindex(columns=tickers_fi)
 
