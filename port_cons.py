@@ -1045,6 +1045,65 @@ def median_credit_quality(df_wgt, credit_qual_breakdown, bonds_list):
     median = credit_qual_df.index[credit_qual_df['cumsum'] >= 0.5][0]
     return median
 
+def calc_avg_credit_rating(portfolio_weights, bond_ratings, latest_data=True, start_date=None, end_date=None):
+    """
+    Calculate the average credit rating of a portfolio.
+
+    Parameters:
+        portfolio_allocations (list): List of portfolio weights for each bond (e.g., [0.4, 0.3, 0.2, 0.1]).
+        bond_ratings (list): List of S&P ratings corresponding to each bond (e.g., ['A', 'BBB', 'BB+', 'AA-']).
+    """
+    # Define a mapping from S&P ratings to numerical scores
+    rating_scale = {
+        'AAA': 1, 'AA+': 2, 'AA': 3, 'AA-': 4, 'A+': 5, 'A': 6, 'A-': 7, 'BBB+': 8, 'BBB': 9, 'BBB-': 10, 'BB+': 11, 'BB': 12, 'BB-': 13,
+        'B+': 14, 'B': 15, 'B-': 16, 'CCC+': 17, 'CCC': 18, 'CCC-': 19, 'CC': 20, 'C': 21, 'D': 22}
+
+
+    if latest_data==True:
+        portfolio_weights = portfolio_weights.loc[start_date:end_date].drop(columns=['reb_flag']).iloc[-1]
+    else:
+        portfolio_weights = portfolio_weights.loc[start_date:end_date].drop(columns=['reb_flag']).mean()
+        
+    portfolio_weights = portfolio_weights[portfolio_weights != 0]
+    
+    portfolio_weights = pd.DataFrame(portfolio_weights).T
+    portfolio_weights.columns = [col.replace('_wgt', '') for col in portfolio_weights.columns]
+
+    tickers = portfolio_weights.columns
+    tickers_fi = [ticker for ticker in tickers if df_fi_metrics.loc['Credit rating', ticker] != 0]
+
+    bond_ratings = bond_ratings.reindex(columns=tickers_fi)
+
+    # Reverse mapping to convert numerical scores back to ratings
+    reverse_rating_scale = {v: k for k, v in rating_scale.items()}
+
+    # Validate input lengths
+    if len(portfolio_weights) != len(bond_ratings):
+        raise ValueError("Length of portfolio_allocations and bond_ratings must match.")
+    
+    # Create a DataFrame for processing
+    portfolio_df = pd.DataFrame({
+    'Weight': portfolio_weights[tickers_fi].values[0],
+    'Rating': bond_ratings[tickers_fi].values[0]})
+
+    # Map S&P ratings to numerical scores
+    portfolio_df['Rating Score'] = portfolio_df['Rating'].map(rating_scale)
+
+    # Check for invalid ratings
+    if portfolio_df['Rating Score'].isna().any():
+        invalid_ratings = portfolio_df[portfolio_df['Rating Score'].isna()]['Rating'].tolist()
+        raise ValueError(f"Invalid S&P ratings detected: {invalid_ratings}")
+
+    # Ensure weights sum to 1
+    portfolio_df['Normalized Weight'] = portfolio_df['Weight'] / portfolio_df['Weight'].sum()
+
+    # Calculate weighted average score
+    weighted_average_score = (portfolio_df['Rating Score'] * portfolio_df['Normalized Weight']).sum()
+
+    # Find the closest rating for the weighted average score
+    closest_rating = reverse_rating_scale[round(weighted_average_score)]
+    return closest_rating
+
 def exposure_dcm(df_all_port_weights, etf_dcm, etf_credit_quality, bonds_additional, portfolio_names):
     mat_dur_df_all = pd.DataFrame()
 
