@@ -1453,14 +1453,12 @@ def plot_pie_chart_topX(series, title, topX=10, width=1000, height=600):
 
         fig = go.Figure(data=[go.Pie(
             labels=labels, values=values, textinfo='label+percent', 
-            hole=0.3, textposition='inside',  # Force all labels to stay inside
-            insidetextorientation='horizontal'  # Orient text for better readability
+            hole=0.3, textposition='outside',  # Force all labels to stay inside
         )])
-        fig.update_layout(title=title, width=width, height=height, showlegend=True)
+        fig.update_layout(title=title, width=width, height=height, showlegend=False)
         return fig
     else:
         print("No values greater than 0 to plot.")  
-        return None  
         return None
 
 def plot_bar_chart_topX(series, title, topX=10, width=1000, height=600):
