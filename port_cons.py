@@ -1451,8 +1451,8 @@ def plot_pie_chart_topX(series, title, topX=10, width=1000, height=600):
             labels.append('Others')
             values.append(other_sum)
 
-        fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent', hole=0.3)])
-        fig.update_layout(title=title, width=width, height=height, showlegend=True)
+        fig = go.Figure(data=[go.Pie(labels=labels, values=values, textinfo='label+percent', hole=0.3, textposition='inside')])
+        fig.update_layout(title=title, width=width, height=height, showlegend=False)
         return fig
     else:
         print("No values greater than 0 to plot.")  
