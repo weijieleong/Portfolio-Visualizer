@@ -1447,7 +1447,7 @@ def plot_pie_chart_topX(series, title, topX=10, width=1000, height=600):
         values = list(top_x)
         
         # Add 'Others' only if other_sum is greater than 0
-        if other_sum > 0:
+        if other_sum > 0.01:
             labels.append('Others')
             values.append(other_sum)
 
