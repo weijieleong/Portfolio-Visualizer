@@ -1427,13 +1427,23 @@ def plot_ret_attribution(weights, returns, start_date=None, end_date=None, title
         df_ret_attr_total = df_ret_attr_total.sort_values(by='Return attribution', axis=0, ascending=False).map('{:.2%}'.format)
         return df_ret_attr_total
     
-def plot_pie_chart(series, title=None, width=1000, height=600):
+def plot_pie_chart(series, title=None, width=1000, height=600, colors=None):
+    pie_data = {
+        'labels': series.index,
+        'values': series,
+        'textinfo': 'label+percent',
+        'hole': 0.3
+    }
 
-    fig = go.Figure(data=[go.Pie(labels=series.index, values=series, textinfo='label+percent', hole=0.3)])
-    fig.update_layout(title=title, width=width, height=height, showlegend=True)
+    # Add marker with custom colors if provided
+    if colors:
+        pie_data['marker'] = dict(colors=colors)
+    
+    fig = go.Figure(data=[go.Pie(**pie_data)]) # Unpack pie_data into go.Pie
+    fig.update_layout(title=title, width=width, height=height, showlegend=True, font=dict(family="Arial", size=12))
     fig.show()
     
-def plot_pie_chart_topX(series, title, topX=10, width=1000, height=600):
+def plot_pie_chart_topX(series, title, topX=10, width=1000, height=600, colors=None):
     # Filter for values greater than 0
     series = series[series > 0]
 
@@ -1451,17 +1461,29 @@ def plot_pie_chart_topX(series, title, topX=10, width=1000, height=600):
             labels.append('Others')
             values.append(other_sum)
 
-        fig = go.Figure(data=[go.Pie(
-            labels=labels, values=values, textinfo='label+percent', 
-            hole=0.3, textposition='outside',  # Force all labels to stay inside
-        )])
-        fig.update_layout(title=title, width=width, height=height, showlegend=False)
+        # Create the Pie trace data
+        pie_data = {
+            'labels': labels, 
+            'values': values, 
+            'textinfo': 'label+percent', 
+            'hole': 0.3, 
+            'textposition': 'outside',  
+        }
+
+        # Add marker with custom colors if provided
+        if colors:
+            pie_data['marker'] = dict(colors=colors)
+
+        fig = go.Figure(data=[go.Pie(**pie_data)])  # Unpack pie_data into go.Pie
+        fig.update_layout(title=title, width=width, height=height, showlegend=False, font=dict(family="Arial", size=12))
         return fig
     else:
         print("No values greater than 0 to plot.")  
         return None
 
-def plot_bar_chart_topX(series, title, topX=10, width=1000, height=600):
+def plot_bar_chart_topX(series, title, topX=10, width=1000, height=600, colors=None):
+
+
     # Filter for values greater than 0
     series = series[series > 0]
 
@@ -1483,14 +1505,21 @@ def plot_bar_chart_topX(series, title, topX=10, width=1000, height=600):
         total_sum = sum(values)
         text_labels = [f'{round(value / total_sum * 100, 2)}%' for value in values]  # Only percentage
 
-        fig = go.Figure(data=[go.Bar(
-            x=labels,
-            y=values,
-            text=text_labels,  # Display only percentage
-            textposition='auto',  # Position labels automatically (typically above bars)
-            textangle=0  # No rotation
-        )])
-        fig.update_layout(title=title, width=width, height=height, showlegend=False, yaxis_tickformat=".0%")
+        # Create the Bar trace data
+        bar_data = {
+            'x': labels,
+            'y': values,
+            'text': text_labels,
+            'textposition': 'auto',
+            'textangle': 0
+        }
+
+        # Add marker with the first custom color if provided
+        if colors:
+            bar_data['marker'] = dict(color=colors[0])  # Use the first color from the list
+
+        fig = go.Figure(data=[go.Bar(**bar_data)])  # Unpack bar_data into go.Bar
+        fig.update_layout(title=title, width=width, height=height, showlegend=False, yaxis_tickformat=".0%", font=dict(family="Arial", size=12))
         return fig
     else:
         print("No values greater than 0 to plot.")
