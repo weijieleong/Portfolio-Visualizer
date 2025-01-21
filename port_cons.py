@@ -1440,7 +1440,7 @@ def plot_pie_chart(series, title=None, width=1000, height=600, colors=None):
         pie_data['marker'] = dict(colors=colors)
     
     fig = go.Figure(data=[go.Pie(**pie_data)]) # Unpack pie_data into go.Pie
-    fig.update_layout(title=title, width=width, height=height, showlegend=True, font=dict(family="Arial", size=12))
+    fig.update_layout(title=title, width=width, height=height, showlegend=True, font=dict(family="Arial", size=12, color='black'))
     fig.show()
     
 def plot_pie_chart_topX(series, title, topX=10, width=1000, height=600, colors=None):
@@ -1475,7 +1475,7 @@ def plot_pie_chart_topX(series, title, topX=10, width=1000, height=600, colors=N
             pie_data['marker'] = dict(colors=colors)
 
         fig = go.Figure(data=[go.Pie(**pie_data)])  # Unpack pie_data into go.Pie
-        fig.update_layout(title=title, width=width, height=height, showlegend=False, font=dict(family="Arial", size=12))
+        fig.update_layout(title=title, width=width, height=height, showlegend=False, font=dict(family="Arial", size=12, color='black'))
         return fig
     else:
         print("No values greater than 0 to plot.")  
@@ -1519,7 +1519,7 @@ def plot_bar_chart_topX(series, title, topX=10, width=1000, height=600, colors=N
             bar_data['marker'] = dict(color=colors[0])  # Use the first color from the list
 
         fig = go.Figure(data=[go.Bar(**bar_data)])  # Unpack bar_data into go.Bar
-        fig.update_layout(title=title, width=width, height=height, showlegend=False, yaxis_tickformat=".0%", font=dict(family="Arial", size=12))
+        fig.update_layout(title=title, width=width, height=height, showlegend=False, yaxis_tickformat=".0%", font=dict(family="Arial", size=12, color='black'))
         return fig
     else:
         print("No values greater than 0 to plot.")
