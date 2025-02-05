@@ -143,7 +143,7 @@ XBI,SPDR S&P Biotech ETF,Equities,US,USD,
 IXJ,iShares Global Healthcare ETF,Equities,US,USD,
 IHE,iShares US Pharmaceuticals ETF,Equities,US,USD,
 PPH,VanEck Pharmaceutical ETF,Equities,US,USD,
-Core E100,Core E100,Syfe portfolio,Syfe portfolio,USD,Backtest + live data
+Core Equity100,Core Equity100,Syfe portfolio,Syfe portfolio,USD,Backtest + live data
 Core Growth,Core Growth,Syfe portfolio,Syfe portfolio,USD,Backtest + live data
 Core Balanced,Core Balanced,Syfe portfolio,Syfe portfolio,USD,Backtest + live data
 Core Defensive,Core Defensive,Syfe portfolio,Syfe portfolio,USD,Backtest + live data
@@ -160,7 +160,7 @@ Cash USD flexi,Cash USD flexi,Syfe portfolio,Syfe portfolio,USD,Live data
 SRS Income Preserve,SRS Income Preserve,Syfe portfolio,Syfe portfolio,SGD,Live data
 SRS Income Enhance,SRS Income Enhance,Syfe portfolio,Syfe portfolio,SGD,Live data
 SRS Cash SGD flexi,SRS Cash SGD flexi,Syfe portfolio,Syfe portfolio,SGD,Backtest + live data
-SRS E100,SRS E100,Syfe portfolio,Syfe portfolio,SGD,Backtest + live data
+SRS Equity100,SRS Equity100,Syfe portfolio,Syfe portfolio,SGD,Backtest + live data
 Downside protected,Downside protected,Syfe portfolio,Syfe portfolio,USD,Backtest + live data
 AAXJ,iShares MSCI All Country Asia ex Japan ETF,Equities,US,USD,
 ARKK,ARK Innovation ETF,Equities,US,USD,
